@@ -4,5 +4,5 @@
 #.git
 .git/
 
-#dsstore
+# dsstore
 *.DS_Store
