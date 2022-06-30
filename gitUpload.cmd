@@ -1,5 +1,5 @@
 @echo off
-echo 请确定自己已经配置好了git与GitHub的接口
+echo Please make sure that you have already set the git
 pause
-echo 正在上传到缓存区...
+echo Uploading to cache
 git add .
