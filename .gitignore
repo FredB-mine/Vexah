@@ -3,3 +3,6 @@
 
 #.git
 .git/
+
+#dsstore
+*.DS_Store
