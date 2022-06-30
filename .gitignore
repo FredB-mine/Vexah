@@ -6,3 +6,6 @@
 
 # dsstore
 *.DS_Store
+
+# py
+*.py
