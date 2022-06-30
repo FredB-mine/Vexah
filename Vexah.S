@@ -54,7 +54,7 @@ fin:
 
 msg:
         DB        0x0a, 0x0a          ; 2个换行
-        DB        "PRTS_Version:0.0.2"
+        DB        "Copyright (c) 2022 Vexah"
         DB        0x0a                ; 换行
         DB        0
 
