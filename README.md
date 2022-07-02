@@ -6,4 +6,4 @@
 </p>
 
 # VexahOS Project
-VexahOS - 一个简单的,详细的,POSIX兼容的,带有浓重个人风格的操作系统.
+VexahOS - 一个简单的,详细的,POSIX兼容的,带有浓重个人风格的操作系统.  
