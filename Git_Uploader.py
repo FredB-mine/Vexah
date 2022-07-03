@@ -75,7 +75,7 @@ class Main:
         if IfChange == 'Y' or IfChange == 'y':
             returnToBranch = input("是否回退到原来的分支? ")
             if returnToBranch != 'N' and returnToBranch != 'n':
-                Main.runAndGet("git switch " + currentBranch)
+                Main.runAndGet("git checkout " + currentBranch)
         return
 
 if __name__ == '__main__':
