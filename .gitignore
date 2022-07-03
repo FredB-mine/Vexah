@@ -4,9 +4,6 @@
 #.git
 .git/
 
-# NoUpload
-No_upload/
-
 # dsstore
 *.DS_Store
 
