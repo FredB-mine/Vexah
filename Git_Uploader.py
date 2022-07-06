@@ -68,7 +68,7 @@ class Main:
         print("更改过的文件: ",commitResult)
         for name in commitResult:
             currentCommit = input("请输入对" + name + "的commit: ")
-            Main.runAndGet("git commit " + name + " -m \"" + currentCommit + "\"")
+            Main.runAndGet("git commit \"" + name.split()[0] + "\" -m \"" + currentCommit + "\"")
         checkIfPush = input("是否推送到GitHub? ")
         if checkIfPush != 'N' and checkIfPush != 'n':
             Main.runAndGet("git push origin " + WhichToChange)
