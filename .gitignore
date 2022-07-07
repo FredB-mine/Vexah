@@ -1,8 +1,5 @@
 #vscode config
 .vscode/
 
-#git files
-.git/
-
 # dsstore
 *.DS_Store
