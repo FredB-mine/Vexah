@@ -1,4 +1,4 @@
-; Copyright (c) 2022 Vexah
+; Copyright (c) 2022 Vexah <fredbao1126@163.com>
 ; Version:0.0.1
 ; TAB = 4
 
