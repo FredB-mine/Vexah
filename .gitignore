@@ -1,5 +1,8 @@
 #vscode config
 .vscode/
 
+# uploader log
+Uploader_log/
+
 # dsstore
 *.DS_Store
