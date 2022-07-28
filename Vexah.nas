@@ -1,58 +1,70 @@
 ; CopyRight (c) 2022-present, The Vexah Team. All rights reserved.
 ; Author: The Vexah Team, DrAlfred
-; Version: 0.1.2
+; Version: 0.2.0
 ; Date: 2022-07-28
 ; License: MIT
 
-; The code to initialize FAT32 Disk
+		ORG		0x7c00			; 指明程序的装载地址
 
-    DB  0xeb, 0x4e, 0x90
-    DB  "VexahIPL"          ; The name of the IPL(Initial Program Loader)   IPL名称
-    DW  512                 ; The size of Each Sector(must be 512B)         每个扇区的大小(必须是512B)
-    DB  1                   ; The number of Sectors per Cluster(must be 1)  每个簇的扇区数(必须是1)
-    DW  1                   ; The start of FAT(Normally be 1)               FAT的起始位置(通常是1)
-    DB  2                   ; The number of FAT(must be 2)                  FAT的数量(必须是2)
-    DW  224                 ; The size of Root Directory(normally be 224)   根目录的大小(通常是224)
-    DW  2880                ; The size of The disk(normally be 2880)        磁盘的大小(通常是2880)
-    DB  0xf0                ; The media type(normally be 0xf0)              磁盘的媒体类型(通常是0xf0)
-    DW  9                   ; The length(sector) of FAT(must be 9)          FAT的长度(必须是9)
-    DW  18                  ; How much Sectors in each track(must be 18)    每个磁道的扇区数(必须是18)
-    DW  2                   ; The number of heads(must be 2)                磁头的数量(必须是2)
-    DD  0                   ; The number of hidden sectors(must be 0)       隐藏的扇区数(必须是0)
-    DD  2880                ; Rewrite the length of the disk                重写磁盘的长度
-    DB  0, 0, 0x29          ; Reserve
-    DD  0xffffffff          ; The signature of the disk(must be 0xffffffff) 磁盘的号码(必须是0xffffffff)
-    DB  "Vexah-OS   "       ; The name of the disk(Is Vexah-OS)             磁盘的名称(是Vexah-OS)
-    DB  "FAT32   "          ; The type of the disk(Is FAT32)                磁盘的类型(是FAT32)
-    RESB    18
+; 以下这段是标准FAT12格式化软盘所要的代码
 
-; The code to initialize FAT32 Disk End
+		JMP		entry
+		DB		0x90
+		DB 	    "PRTS_IPL"	   ; 启动扇区 长度为8的字符串均可
+		DW 	    512			   ; 扇区大小 必须为512
+		DB 	    1			   ; 簇大小 必须为1个扇区
+		DW   	1              ; FAT的起始位置(一般为1)
+		DB 	    2              ; FAT的个数(必须为2)
+		DW 	    224			   ; 根目录的大小(一般为224项)
+		DW 	    2880		   ; 该磁盘的大小(必须为2880个扇区)
+		DB 	    0xf0		   ; 该磁盘的种类(必须为0xf0)
+		DW	    9			   ; FAT的长度(必须为9扇区)
+		DW      18             ; 一个磁道有几个扇区(必须为18)
+		DW      2 			   ; 磁头数字(必须为2)
+		DD	    0			   ; 不使用的扇区个数(必须为0)
+		DD 	    2880           ; 重写磁盘大小
+		DB 	    0,0,0x29	   ; damedane
+		DD      0xffffffff     ; 卷标号码
+		DB      "PRTS-DISK  "  ; 磁盘名称(11字节)
+		DB      "FAT12   "     ; 磁盘格式名称(8字节)
+		RESB    18			   ; 空出18字节
 
-; The main function of the IPL
+; 程序核心
 
-    DB  0xb8, 0x00, 0x00, 0x8e, 0xd0, 0xbc, 0x00, 0x7c
-    DB  0x8e, 0xd8, 0x8e, 0xc0, 0xbe, 0x74, 0x7c, 0x8a
-    DB  0x04, 0x83, 0xc6, 0x01, 0x3c, 0x00, 0x74, 0x09
-    DB  0xb4, 0x0e, 0xbb, 0x0f, 0x00, 0xcd, 0x10, 0xeb
-    DB  0xee, 0xf4, 0xeb, 0xfd
+entry:
+		MOV		AX,0			; 初始化寄存器
+		MOV		SS,AX
+		MOV		SP,0x7c00
+		MOV		DS,AX
+		MOV		ES,AX
 
-; The main function of the IPL End
+		MOV		SI,msg
+putloop:
+		MOV		AL,[SI]
+		ADD		SI,1			; 将SI+1
+		CMP		AL,0
+		JE		fin
+		MOV		AH,0x0e			; 显示一个文字
+		MOV		BX,15			; 指定其颜色
+		INT		0x10			; 调用显卡BIOS
+		JMP		putloop
+fin:
+		HLT						; 让CPU停止
+		JMP		fin				; 无限循环
 
-; The info-show function 
+msg:
+		DB		0x0a, 0x0a		; 2个换行
+		DB		"PRTS Serving for Doctor and Kal'tsit"
+		DB		0x0a			; 换行
+		DB		0
 
-    DB  0x0a, 0x0a              ; 2 \n s
-    DB  "Hello,Vexah"           ; The info to show
-    DB  0x0a                    ; 2 \n s
-    DB  0
+		RESB	0x7dfe-$		; 填写0x00 直到0x07dfe的地址
 
-    RESB   0x1fe-$            ; fill 0x00 until 0x001fe
-    DB  0x55, 0xaa              
+		DB		0x55, 0xaa
 
-; The info-show function End
+; 启动区部分之外的输出
 
-; The output outside of the IPL
-
-    DB  0xf0, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00
-    RESB    4600
-    DB  0xf0, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00
-    RESB    1469432
+		DB		0xf0, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00
+		RESB	4600
+		DB		0xf0, 0xff, 0xff, 0x00, 0x00, 0x00, 0x00, 0x00
+		RESB	1469432
