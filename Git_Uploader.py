@@ -47,14 +47,14 @@ class Main:
         return _ret
 
     def main() -> None:
-        logger.add(".\\Uploader_log\\file-{time}.log", retention="1 day")
+        logger.add(".\\Uploader_log\\file-{time:YYYY-MM-DD}.log", retention="1 day")
         logger.info("欢迎来到Git上传工具")
         # 首先检查当前的分支:
         CheckResult = Main.checkBranch()
         currentBranch = CheckResult[0]
         otherBranches = CheckResult[1]
-        logger.info(("当前分支: ",currentBranch))
-        logger.info(("其他分支: ",otherBranches))
+        logger.info("当前分支: " + str(currentBranch))
+        logger.info("其他分支: " + str(otherBranches))
         IfChange = input("是否切换到其他分支? ")
         if IfChange == 'Y' or IfChange == 'y':
             WhichToChange = input("切换到哪个分支? ")
@@ -68,7 +68,7 @@ class Main:
         Main.runAndGet("git add .")
         # check which to commit
         commitResult = Main.findCommits()
-        logger.info(("更改过的文件: ",commitResult))
+        logger.info("更改过的文件: " + str(commitResult))
         for name in commitResult:
             currentCommit = input("请输入对" + name.split()[0] + "的commit: ")
             Main.runAndGet("git commit \"" + name.split()[0] + "\" -m \"" + currentCommit + "\"")
