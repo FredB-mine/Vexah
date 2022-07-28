@@ -7,7 +7,8 @@ Uploader_log/
 # dsstore
 *.DS_Store
 
-*.pyc
+# pycache
+*/__pycache__
 
 *.log
 
