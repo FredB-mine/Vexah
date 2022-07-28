@@ -9,6 +9,8 @@ from transPackConfigs import Configs
 
 from requests_html import HTMLSession
 from ttkbootstrap import *
+import warnings
+warnings.filterwarnings("ignore")
 
 class Main:
     global to_translate_text
@@ -192,14 +194,29 @@ if __name__ == '__main__':
     file = open(fileName, "r", encoding="shift-jis")
     rs = compile("{}; {}")
     rs2 = compile("; {}")
+    printCache = []
     for line in file.readlines():
         result = rs.parse(line)
         result2 = rs2.parse(line)
         if (result is not None):
-            print(result[0]+'; '+cls.translate(result[1],"自动检测","中文"))
-            time.sleep(10)
+            tp = result[0]+'; '+cls.translate(result[1],"自动检测","中文")
+            printCache.append(tp + '\n')
+            print(tp)
+            time.sleep(4)
         elif (result2 is not None):
-            print('; '+cls.translate(result2[0],"自动检测","中文"))
-            time.sleep(10)
+            tp = '; '+cls.translate(result2[0],"自动检测","中文")
+            printCache.append(tp + '\n')
+            print(tp)
+            time.sleep(4)
         else:
-            print(line)    
+            printCache.append(line)
+            print(line,end = "")    
+    file.close()
+    save = input("是否保存结果? (y/n) ")
+    if save != 'N' and save != 'n':
+        fileName = input("请输入文件名: ")
+        file = open(fileName,'w',encoding='utf-8')
+        file.writelines(printCache)
+        file.close()
+    else:
+        exit()
