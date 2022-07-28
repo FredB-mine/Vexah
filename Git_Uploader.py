@@ -1,11 +1,13 @@
 try:
     from subprocess import Popen, PIPE
     from parse import compile
+    from loguru import logger
 
 except ImportError:
     from os import system
     __libs__ = [
         "subprocess",
+        "loguru",
         "parse"
     ]
     for name in __libs__:
@@ -38,34 +40,35 @@ class Main:
         commandOut = Main.runAndGet("git status")
         for line in commandOut:
             line = line.decode("utf-8")
-            print(line)
+            logger.info(line.replace("\n",""))
             __ParseResult = Main.modifiedExpr.parse(line)
             if __ParseResult != None:
                 _ret.append(__ParseResult[1])
         return _ret
 
     def main() -> None:
-        print("欢迎来到Git上传工具")
+        logger.add(".\\Uploader_log\\file-{time}.log", retention="1 day")
+        logger.info("欢迎来到Git上传工具")
         # 首先检查当前的分支:
         CheckResult = Main.checkBranch()
         currentBranch = CheckResult[0]
         otherBranches = CheckResult[1]
-        print("当前分支: ",currentBranch)
-        print("其他分支: ",otherBranches)
+        logger.info(("当前分支: ",currentBranch))
+        logger.info(("其他分支: ",otherBranches))
         IfChange = input("是否切换到其他分支? ")
         if IfChange == 'Y' or IfChange == 'y':
             WhichToChange = input("切换到哪个分支? ")
             if WhichToChange in otherBranches:
                 Main.runAndGet("git checkout " + WhichToChange)
             else:
-                print("NoSence!!!")
+                logger.info("NoSence!!!")
                 return
         else:
             WhichToChange = currentBranch
         Main.runAndGet("git add .")
         # check which to commit
         commitResult = Main.findCommits()
-        print("更改过的文件: ",commitResult)
+        logger.info(("更改过的文件: ",commitResult))
         for name in commitResult:
             currentCommit = input("请输入对" + name.split()[0] + "的commit: ")
             Main.runAndGet("git commit \"" + name.split()[0] + "\" -m \"" + currentCommit + "\"")
