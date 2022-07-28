@@ -6,3 +6,10 @@ Uploader_log/
 
 # dsstore
 *.DS_Store
+
+__pycache__/
+
+
+*.log
+
+log.txt
