@@ -54,7 +54,7 @@ fin:
 
 msg:
 		DB		0x0a, 0x0a		; 2个换行
-		DB		"Hello Vexah"
+		DB		"Hello Vexah 2.0"
 		DB		0x0a			; 换行
 		DB		0
 
