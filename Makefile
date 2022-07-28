@@ -1,5 +1,8 @@
 # Make the os
 
+default : 
+	../z_tools/make.exe img
+
 ipl.bin : ipl.nas Makefile
 	../z_tools/nask.exe ipl.nas ipl.bin ipl.lst
 
@@ -20,3 +23,11 @@ run :
 install :
 	..\z_tools\make.exe img
 	..\z_tools\imgtol.com w a: VexahOS.img
+
+clean : 
+	-del ipl.bin
+	-del ipl.lst
+
+src_only : 
+	..\z_tools\make.exe clean
+	-del VexahOS.img
