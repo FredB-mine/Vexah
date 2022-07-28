@@ -10,7 +10,7 @@
 
 		JMP		entry
 		DB		0x90
-		DB 	    "PRTS_IPL"	   ; 启动扇区 长度为8的字符串均可
+		DB 	    "VexahIPL"	   ; 启动扇区 长度为8的字符串均可
 		DW 	    512			   ; 扇区大小 必须为512
 		DB 	    1			   ; 簇大小 必须为1个扇区
 		DW   	1              ; FAT的起始位置(一般为1)
@@ -25,8 +25,8 @@
 		DD 	    2880           ; 重写磁盘大小
 		DB 	    0,0,0x29	   ; damedane
 		DD      0xffffffff     ; 卷标号码
-		DB      "PRTS-DISK  "  ; 磁盘名称(11字节)
-		DB      "FAT12   "     ; 磁盘格式名称(8字节)
+		DB      "Vexah-OS   "  ; 磁盘名称(11字节)
+		DB      "FAT32   "     ; 磁盘格式名称(8字节)
 		RESB    18			   ; 空出18字节
 
 ; 程序核心
@@ -54,7 +54,7 @@ fin:
 
 msg:
 		DB		0x0a, 0x0a		; 2个换行
-		DB		"PRTS Serving for Doctor and Kal'tsit"
+		DB		"Hello Vexah"
 		DB		0x0a			; 换行
 		DB		0
 
