@@ -27,7 +27,7 @@
         DD		0xffffffff		; 可能是卷序列号
         DB		"Vexah      "	; 磁盘名称（11字节）
         DB		"FAT12   "		; 格式名称（8字节）
-        RESB	18				; 先打18个字节
+        RESB	        18				; 先打18个字节
 
 ; 程序主体
 
@@ -71,10 +71,10 @@ putloop:
         JMP		putloop
 msg:
         DB		0x0a, 0x0a		; 两个换行符
-        DB		"load error"
-        DB		0x0a			; 改行
+        DB		"Error: Disk read failed! Please check the disk."
+        DB		0x0a			; 换行
         DB		0
 
-        RESB	0x7dfe-$		; 用0x00填满0x7dfe的命令
+        RESB	        0x7dfe-$		; 用0x00填充到0x7dfe的命令
 
         DB		0x55, 0xaa
