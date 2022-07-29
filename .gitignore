@@ -9,6 +9,7 @@ Uploader_log/
 
 # pycache
 */__pycache__
+*.py
 
 *.log
 
