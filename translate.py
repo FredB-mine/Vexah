@@ -202,12 +202,12 @@ if __name__ == '__main__':
             tp = result[0]+'; '+cls.translate(result[1],"自动检测","中文")
             printCache.append(tp + '\n')
             print(tp)
-            time.sleep(4)
+            time.sleep(2)
         elif (result2 is not None):
             tp = '; '+cls.translate(result2[0],"自动检测","中文")
             printCache.append(tp + '\n')
             print(tp)
-            time.sleep(4)
+            time.sleep(2)
         else:
             printCache.append(line)
             print(line,end = "")    
