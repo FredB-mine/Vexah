@@ -1,4 +1,4 @@
-# Make the os
+# Make VexahOS
 
 default : 
 	../z_tools/make.exe img
