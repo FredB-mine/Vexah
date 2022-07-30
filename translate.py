@@ -5,12 +5,30 @@ from random import randint
 from parse import compile
 from typing import Any
 from loguru import logger
-from transPackConfigs import Configs
 
 from requests_html import HTMLSession
 from ttkbootstrap import *
 import warnings
 warnings.filterwarnings("ignore")
+
+class Configs:
+    __name__ = "Configs"
+    class logConfigs:
+        needConsoleOutPut   = False
+        needFileOutPut      = True
+        loglevel            = "DEBUG"
+        fileName            = "translateLog.log"
+        fileEncoding        = "utf-8"
+
+    class timeConfigs:
+        timeFormat          = "%Y-%m-%d [%H:%M:%S] "
+        timeZone            = "Asia/Shanghai"
+
+    class SSHConfigs:
+        host                = "192.168.31.100"
+        port                = "22"
+        username            = "root"
+        password            = "20091126"
 
 class Main:
     global to_translate_text
