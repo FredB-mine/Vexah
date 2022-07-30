@@ -22,6 +22,15 @@ class Main:
             command, shell = True, stdout = PIPE
         ).stdout.readlines()
 
+    def force_decode(string:str) -> str:
+        string = string.replace("\"","")
+        retval = "."
+        for sec in string.split("/"):
+            sec = f"b'{sec}'"
+            sec = eval(sec)
+            retval += "\\" + str(sec,encoding='utf-8')
+        return retval
+
     def checkBranch() -> list:
         # 返回(当前branch,其他branch)
         _ret = ["",[]]
@@ -70,8 +79,12 @@ class Main:
         commitResult = Main.findCommits()
         logger.info("更改过的文件: " + str(commitResult))
         for name in commitResult:
-            currentCommit = input("请输入对" + name.split()[0] + "的commit: ")
-            Main.runAndGet("git commit \"" + name.split()[0] + "\" -m \"" + currentCommit + "\"")
+            name = name.split()[0]
+            if(isinstance(name,str)):
+                name = Main.force_decode(name)
+                logger.info("Decoded: " + name)
+            currentCommit = input("请输入对" + name + "的commit: ")
+            Main.runAndGet("git commit \"" + name + "\" -m \"" + currentCommit + "\"")
         checkIfPush = input("是否推送到GitHub? ")
         if checkIfPush != 'N' and checkIfPush != 'n':
             Main.runAndGet("git push origin " + WhichToChange)
