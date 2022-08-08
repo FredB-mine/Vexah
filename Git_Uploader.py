@@ -22,10 +22,10 @@ class Main:
             command, shell = True, stdout = PIPE
         ).stdout.readlines()
 
-    def force_decode(string:str) -> str:
-        string = string.replace("\"","")
+    def force_decode(route_info :str) -> str:
+        route_info = route_info.replace("\"","")    # Remove the '"'s on both sides
         retval = "."
-        for sec in string.split("/"):
+        for sec in route_info.split("/"):
             sec = f"b'{sec}'"
             sec = eval(sec)
             retval += "\\" + str(sec,encoding='utf-8')
