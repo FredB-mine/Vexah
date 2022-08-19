@@ -11,7 +11,10 @@ except ImportError:
         "parse"
     ]
     for name in __libs__:
-        system("pip install " + name)
+        try:
+            system("pip install " + name)
+        except Exception:
+            continue
 
 class Main:
     NormalBranch  = compile("  {}\n")
