@@ -48,8 +48,6 @@ class Main:
         return _ret
 
     def findCommits() -> list:
-        # TODO Fix bug when move files to another folder(RENAME)
-        # TIPS 可以查询git status de文档
         _ret = []
         commandOut = Main.runAndGet("git status")
         for line in commandOut:
@@ -64,6 +62,7 @@ class Main:
         return _ret
 
     def main() -> None:
+        logger.add(".\\Uploader_log\\file-{time:YYYY-MM-DD}.log", retention="1 day")
         logger.info("欢迎来到Git上传工具")
         # 首先检查当前的分支:
         CheckResult = Main.checkBranch()
@@ -90,7 +89,7 @@ class Main:
             if(isinstance(name,str)):
                 name = Main.force_decode(name)
                 logger.info("Decoded: " + name)
-            currentCommit = input("请输入对" + name + "的commit: ")
+            currentCommit = input(f"请输入对 {name} 的commit: ").replace('"','\\"')
             Main.runAndGet(f'git commit "{name}" -m "{currentCommit}"')
         checkIfPush = input("是否推送到GitHub? ")
         if checkIfPush != 'N' and checkIfPush != 'n':
